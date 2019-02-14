@@ -69,10 +69,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(document).ready(function () {
-            var $table = $('.js-rep-log-table');
-
-            $table.find('.js-delete-rep-log').on('click', function (e) {
+        var RepLogApp = {
+            handleRepLogDelete: function (e) {
                 e.preventDefault();
 
                 $(this).addClass('text-danger');
@@ -82,21 +80,48 @@
                     .addClass('fa-spin');
                 var deleteUrl = $(this).data('url');
                 var $row = $(this).closest('tr');
-                var $totalWeightContainer = $table.find('.js-total-weight');
-                var newWeight = $totalWeightContainer.html() - $row.data('weight');
                 $.ajax({
                     url: deleteUrl,
                     method: 'DELETE',
                     success: function () {
-                        $row.fadeOut();
-                        $totalWeightContainer.html(newWeight);
+                        $row.fadeOut('normal', function () {
+                            $(this).remove();
+                            RepLogApp.updateTotalWeightLifted();
+                        });
                     }
                 })
-
-            })
-            $table.find('tbody tr').on('click', function () {
+            },
+            whatIsThis: function(greeting) {
+                console.log(this, greeting);
+            },
+            handleRowClick: function (e) {
                 console.log('row clicked');
-            })
+            },
+            updateTotalWeightLifted: function() {
+                var totalWeight = 0;
+                this.$wrapper.find('tbody tr').each(function () {
+                    totalWeight += $(this).data('weight');
+                });
+                this.$wrapper.find('.js-total-weight').html(totalWeight);
+            },
+            initialize: function($wrapper) {
+                this.$wrapper = $wrapper;
+
+                this.$wrapper.find('.js-delete-rep-log').on('click',
+                    this.handleRepLogDelete
+                );
+
+                this.$wrapper.find('tbody tr').on('click',
+                    this.handleRowClick
+                )
+
+                var newThis = {cat: 'meow', dog: 'woof'};
+                this.whatIsThis.call(newThis, 'hello')
+            },
+        };
+        $(document).ready(function () {
+            var $table = $('.js-rep-log-table');
+            RepLogApp.initialize($table);
         })
     </script>
 {% endblock %}
