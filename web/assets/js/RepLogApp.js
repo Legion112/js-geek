@@ -1,25 +1,23 @@
 (function (window, $) {
     'use strict';
-    window.RepLogApp = {
-        initialize: function($wrapper) {
-            this.$wrapper = $wrapper;
-            this.helper = new Helper($wrapper);
-            this.helper2 = new Helper($('footer'));
-            console.log(
-                this.helper.calculateTotalWeight(),
-                this.helper2.calculateTotalWeight()
-            );
+    window.RepLogApp = function ($wrapper) {
+        this.$wrapper = $wrapper;
+        this.helper = new Helper($wrapper);
+        this.helper2 = new Helper($('footer'));
+        console.log(
+            this.helper.calculateTotalWeight(),
+            this.helper2.calculateTotalWeight()
+        );
 
-            this.$wrapper.find('.js-delete-rep-log').on('click',
-                this.handleRepLogDelete.bind(this)
-            );
+        this.$wrapper.find('.js-delete-rep-log').on('click',
+            this.handleRepLogDelete.bind(this)
+        );
 
-            this.$wrapper.find('tbody tr').on('click',
-                this.handleRowClick.bind(this)
-            )
-
-
-        },
+        this.$wrapper.find('tbody tr').on('click',
+            this.handleRowClick.bind(this)
+        )
+    };
+    $.extend(window.RepLogApp.prototype, {
         handleRepLogDelete: function (e) {
             e.preventDefault();
             var $link = $(e.currentTarget);
@@ -51,18 +49,20 @@
                 this.helper.calculateTotalWeight()
             );
         }
-    };
+    });
     /**
      * A "private" object
      */
     let Helper = function ($wrapper) {
         this.$wrapper = $wrapper;
     };
-    Helper.prototype.calculateTotalWeight = function () {
-        var totalWeight = 0;
-        this.$wrapper.find('tbody tr').each(function () {
-            totalWeight += $(this).data('weight');
-        });
-        return totalWeight;
-    };
+    $.extend(Helper.prototype, {
+        calculateTotalWeight: function () {
+            var totalWeight = 0;
+            this.$wrapper.find('tbody tr').each(function () {
+                totalWeight += $(this).data('weight');
+            });
+            return totalWeight;
+        }
+    });
 })(window, jQuery);
