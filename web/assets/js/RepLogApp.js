@@ -34,9 +34,9 @@
             $.ajax({
                 url: Routing.generate('rep_log_list'),
             }).then(data => {
-                $.each(data.items, (key, repLog) => {
-                    this._addRow(repLog);
-                })
+                for (let repLog of data.items) {
+                    this._addRow(repLog)
+                }
             });
         }
         handleRepLogDelete(e) {
@@ -83,9 +83,10 @@
 
             const $form = $(e.currentTarget);
             const formData = {};
-            $.each($form.serializeArray(), (key, fieldData) => {
+            for (let fieldData of $form.serializeArray()) {
                 formData[fieldData.name] = fieldData.value;
-            });
+            }
+            ;
             this._saveRepLog(formData)
                 .then(data => {
                     this._clearForm();
@@ -120,7 +121,7 @@
             this._removeFormErrors();
             const $form = this.$wrapper.find(RepLogApp._selectors.newRepForm);
 
-            $form.find(':input').each((index, element) => {
+            for (let element of $form.find(':input')) {
                 const fieldName = $(element).attr('name');
                 const $wrapper = $(element).closest('.form-group');
                 if (!errorData[fieldName]) {
@@ -131,7 +132,7 @@
                 $error.html(errorData[fieldName]);
                 $wrapper.append($error);
                 $wrapper.addClass('has-error');
-            });
+            }
         }
         _removeFormErrors() {
             const $form = this.$wrapper.find(RepLogApp._selectors.newRepForm);
@@ -160,9 +161,9 @@
 
         static _calculateWeight($elaments) {
             let totalWeight = 0;
-            $elaments.each((i, e) => {
+            for (let e of $elaments) {
                 totalWeight += $(e).data('weight');
-            });
+            }
             return totalWeight;
         }
         getTotalWeightString(maxWeight = 500) {
