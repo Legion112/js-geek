@@ -1,0 +1,26 @@
+{
+  "name": "js-geek",
+  "version": "1.0.0",
+  "description": "Javascript for PHP Geeks Tutorial =================================",
+  "main": "play.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Legion112/js-geek.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Legion112/js-geek/issues"
+  },
+  "homepage": "https://github.com/Legion112/js-geek#readme",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-preset-env": "^1.7.0"
+  }
+}
