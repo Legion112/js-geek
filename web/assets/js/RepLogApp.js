@@ -27,28 +27,24 @@
             newRepForm: '.js-new-rep-log-form'
         },
         loadRepLogs: function () {
-            var self = this;
             $.ajax({
                 url: Routing.generate('rep_log_list'),
-            }).then(function (data) {
-                $.each(data.items, function (key, repLog) {
-                    self._addRow(repLog);
+            }).then(data => {
+                $.each(data.items, (key, repLog) => {
+                    this._addRow(repLog);
                 })
             });
         },
         handleRepLogDelete: function (e) {
             e.preventDefault();
-            var self = this;
             var $link = $(e.currentTarget);
             swal({
                 title: 'Delete this log?',
                 text: 'What? Did you not actually lift this?',
                 showCancelButton: true,
                 showLoaderOnConfirm: true,
-                preConfirm: function () {
-                    return self._deleteRepLog($link);
-                }
-            }).catch(function (arg) {
+                preConfirm: () => this._deleteRepLog($link)
+            }).catch(arg => {
                 console.log(arg)
             });
         },
@@ -60,14 +56,13 @@
                 .addClass('fa-spin');
             var deleteUrl = $link.data('url');
             var $row = $link.closest('tr');
-            let self = this;
             return $.ajax({
                 url: deleteUrl,
                 method: 'DELETE',
-            }).then(function () {
-                $row.fadeOut('normal', function () {
-                    $(this).remove();
-                    self.updateTotalWeightLifted();
+            }).then(() => {
+                $row.fadeOut('normal', () => {
+                    $row.remove();
+                    this.updateTotalWeightLifted();
                 });
             });
         },
@@ -84,32 +79,31 @@
 
             var $form = $(e.currentTarget);
             var formData = {};
-            $.each($form.serializeArray(), function (key, fieldData) {
+            $.each($form.serializeArray(), (key, fieldData) => {
                 formData[fieldData.name] = fieldData.value;
             });
-            var self = this;
             this._saveRepLog(formData)
-                .then(function (data) {
-                    self._clearForm();
-                    self._addRow(data)
-                }).catch(function (errorData) {
-                self._mapErrorsToForm(errorData.errors);
+                .then(data => {
+                    this._clearForm();
+                    this._addRow(data)
+                }).catch(errorData => {
+                this._mapErrorsToForm(errorData.errors);
             })
         },
         _saveRepLog: function (data) {
-            return new Promise(function (resolve, reject) {
+            return new Promise((resolve, reject) => {
                 $.ajax({
                     url: Routing.generate('rep_log_new'),
                     method: 'POST',
                     data: JSON.stringify(data),
-                }).then(function (data, textStatus, jqXHR) {
+                }).then((data, textStatus, jqXHR) => {
                     $.ajax({
                         url: jqXHR.getResponseHeader('Location'),
                     }).then(function (data) {
                         // we're finally done
                         resolve(data);
                     })
-                }).catch(function (jqXHR) {
+                }).catch(jqXHR => {
                     var errorData = JSON.parse(jqXHR.responseText);
                     reject(errorData);
                 });
@@ -121,9 +115,9 @@
             this._removeFormErrors();
             var $form = this.$wrapper.find(this._selectors.newRepForm);
 
-            $form.find(':input').each(function () {
-                var fieldName = $(this).attr('name');
-                var $wrapper = $(this).closest('.form-group');
+            $form.find(':input').each((index, element) => {
+                var fieldName = $(element).attr('name');
+                var $wrapper = $(element).closest('.form-group');
                 if (!errorData[fieldName]) {
                     // no error!
                     return;
@@ -162,8 +156,8 @@
     $.extend(Helper.prototype, {
         calculateTotalWeight: function () {
             var totalWeight = 0;
-            this.$wrapper.find('tbody tr').each(function () {
-                totalWeight += $(this).data('weight');
+            this.$wrapper.find('tbody tr').each((i, e) => {
+                totalWeight += $(e).data('weight');
             });
             return totalWeight;
         }
