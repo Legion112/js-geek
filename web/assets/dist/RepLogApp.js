@@ -45,7 +45,10 @@ function _classCallCheck(instance, Constructor) {
 
             this.loadRepLogs();
 
-            this.$wrapper.on('click', '.js-delete-rep-log', this.handleRepLogDelete.bind(this));
+            this.$wrapper.on('click', '.js-delete-rep-log', this.handl
+            eRepLogDelete.bind(this)
+        )
+            ;
 
             this.$wrapper.on('click', 'tbody tr', this.handleRowClick.bind(this));
 
