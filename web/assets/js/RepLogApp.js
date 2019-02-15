@@ -5,7 +5,8 @@
     class RepLogApp {
         constructor($wrapper) {
             this.$wrapper = $wrapper;
-            HelperInstances.set(this, new Helper($wrapper));
+            this.repLogs = [];
+            HelperInstances.set(this, new Helper(this.repLogs));
 
             this.loadRepLogs();
 
@@ -38,6 +39,7 @@
                 for (let repLog of data.items) {
                     this._addRow(repLog)
                 }
+                console.log(this.repLogs, this.repLogs.includes(data.items[0]));
             });
         }
         handleRepLogDelete(e) {
@@ -146,6 +148,7 @@
             $form[0].reset();
         }
         _addRow(repLog) {
+            this.repLogs.push(repLog);
             const tplText = rowTemplate(repLog);
             const tpl = _.template(tplText)
             const html = tpl(repLog)
@@ -156,14 +159,14 @@
     }
 
     class Helper {
-        constructor($wrapper) {
-            this.$wrapper = $wrapper;
+        constructor(repLogs) {
+            this.repLogs = repLogs;
         }
 
-        static _calculateWeight($elaments) {
+        static _calculateWeight(repLogs) {
             let totalWeight = 0;
-            for (let e of $elaments) {
-                totalWeight += $(e).data('weight');
+            for (let repLog of repLogs) {
+                totalWeight += repLog.totalWeightLifted;
             }
             return totalWeight;
         }
@@ -177,7 +180,7 @@
 
         calculateTotalWeight() {
             return Helper._calculateWeight(
-                this.$wrapper.find('tbody tr')
+                this.repLogs
             )
         }
     }

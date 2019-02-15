@@ -1,14 +1,7 @@
-let foods = new WeakMap();
+let foods = new Set();
 
-foods.set(['italian'], 'gelato');
-foods.set(['mexican'], 'torta');
-foods.set(['canadian'], 'poutine');
+foods.add('gelato');
+foods.add('torta');
+foods.add('gelato');
 
-let southernUSStates = ['Tennesse', 'Hentucky', 'Texas'];
-foods.set(southernUSStates, 'hot chicken')
-southernUSStates = null;
-
-console.log(
-    foods.get(['italian']),
-    foods.get(southernUSStates),
-);
+console.log(foods);
