@@ -1,27 +1,9 @@
-class AGreatClass {
-    constructor(greatNumber) {
-        this.greatNumber = greatNumber;
-    }
+let yummyThings = ['pizza', 'gelato', 'sushi', 'cheeseburger'];
 
-    returnGreatThings() {
-        return this.greatNumber;
-    }
-}
+let greatThings = ['swimming', 'sunsets', ...yummyThings, 'New Orleans'];
+let copyOfGreatThings = [...greatThings];
 
-class AnotherGreatClass extends AGreatClass {
-    constructor(greatNumber, greatWord) {
-        super(greatNumber);
-        this.greatWord = greatWord;
-    }
+copyOfGreatThings.push('summer');
 
-    returnGreatThings() {
-        let greatNumber = super.returnGreatThings();
-        return [
-            greatNumber,
-            this.greatWord
-        ];
-    }
-}
-
-const aGreatObject = new AnotherGreatClass(42, 'adventure');
-console.log(aGreatObject.returnGreatThings())
+console.log(copyOfGreatThings);
+console.log(greatThings);

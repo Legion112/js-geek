@@ -144,6 +144,8 @@
             $form[0].reset();
         }
         _addRow(repLog) {
+            let {id, itemLabel, reps, totallyMadeUpKey = "whatever!"} = repLog;
+            console.log(id, itemLabel, reps, totallyMadeUpKey);
             const tplText = $('#js-rep-log-row-template').html();
             const tpl = _.template(tplText)
             const html = tpl(repLog)
