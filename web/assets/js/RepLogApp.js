@@ -1,4 +1,4 @@
-(function (window, $, Routing) {
+(function (window, $, Routing, swal) {
     'use strict';
     window.RepLogApp = function ($wrapper) {
         this.$wrapper = $wrapper;
@@ -38,8 +38,19 @@
         },
         handleRepLogDelete: function (e) {
             e.preventDefault();
+            var self = this;
             var $link = $(e.currentTarget);
-
+            swal({
+                title: 'Delete this log?',
+                text: 'What? Did you not actually lift this?',
+                showCancelButton: true,
+            }).then(function () {
+                self._deleteRepLog($link);
+            }).catch(function () {
+                console.log('canceled')
+            });
+        },
+        _deleteRepLog: function ($link) {
             $link.addClass('text-danger');
             $link.find('.fa')
                 .removeClass('fa-trash')
@@ -79,8 +90,7 @@
                 .then(function (data) {
                     self._clearForm();
                     self._addRow(data)
-                }).catch(function (jqXHR) {
-                var errorData = JSON.parse(jqXHR.responseText);
+                }).catch(function (errorData) {
                 self._mapErrorsToForm(errorData.errors);
             })
         },
@@ -98,7 +108,8 @@
                         resolve(data);
                     })
                 }).catch(function (jqXHR) {
-                    reject(jqXHR);
+                    var errorData = JSON.parse(jqXHR.responseText);
+                    reject(errorData);
                 });
             });
 
@@ -155,4 +166,4 @@
             return totalWeight;
         }
     });
-})(window, jQuery, Routing);
+})(window, jQuery, Routing, swal);

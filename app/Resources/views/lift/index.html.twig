@@ -49,6 +49,11 @@
     </div>
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@6.1.1/dist/sweetalert2.css">
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('assets/js/RepLogApp.js') }}"></script>
