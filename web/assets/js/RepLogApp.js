@@ -44,10 +44,12 @@
                 title: 'Delete this log?',
                 text: 'What? Did you not actually lift this?',
                 showCancelButton: true,
-            }).then(function () {
-                self._deleteRepLog($link);
-            }).catch(function () {
-                console.log('canceled')
+                showLoaderOnConfirm: true,
+                preConfirm: function () {
+                    return self._deleteRepLog($link);
+                }
+            }).catch(function (arg) {
+                console.log(arg)
             });
         },
         _deleteRepLog: function ($link) {
@@ -59,7 +61,7 @@
             var deleteUrl = $link.data('url');
             var $row = $link.closest('tr');
             let self = this;
-            $.ajax({
+            return $.ajax({
                 url: deleteUrl,
                 method: 'DELETE',
             }).then(function () {
